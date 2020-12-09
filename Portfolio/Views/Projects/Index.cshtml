@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@model IEnumerable<Portfolio.Models.ProjectModel>
+
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdmin")).Succeeded)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<div class="w-100 d-flex flex-md-wrap">
+
+    @foreach (var project in Model)
+    {
+        <div class="w-25 p-2">
+            <div class="card">
+                <a asp-action="Details" asp-route-id="@project.Id" class="text-decoration-none text-reset">
+
+                    @if(project.Images != null && project.Images.Any())
+                    {
+                        <img src="@project.Images.First().Path" class="card-img-top" style="max-height: 300px;" alt="@project.Images.First().AltText" />
+                    }
+                    <div class="card-body" style="height:150px;">
+                        <h5 class="card-title">@project.Name</h5>
+                        <p class="card-text">@project.Description</p>
+                    </div>
+                </a>
+                @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdmin")).Succeeded)
+                {
+                    <div class="card-footer">
+                        <a asp-action="Edit" asp-route-id="@project.Id" class="btn btn-dark">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@project.Id" class="btn btn-danger">Delete</a>
+                    </div>
+                }
+            </div>
+        </div>      
+    }
+
+</div>
+
+

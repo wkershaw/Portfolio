@@ -1,0 +1,26 @@
+﻿@model Portfolio.Models.ProjectModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="text-left">
+    <h1>
+        @Model.Name
+        <br />
+        <small class="text-muted">
+            @Model.Description
+        </small>
+    </h1>
+</div>
+
+<div class="text-center">
+    @foreach(var Image in Model.Images)
+    {
+        <img src="@Image.Path" class="rounded mx-auto d-inline-block" alt="@Image.AltText" />
+    }
+</div>
+
+<p>
+    @Model.Text
+</p>
